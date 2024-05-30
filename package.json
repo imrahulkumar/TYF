@@ -1,0 +1,12 @@
+{
+  "name": "tyf",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc.cmd %npm_config_filename%.ts && node %npm_config_filename%.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
