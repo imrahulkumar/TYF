@@ -123,6 +123,41 @@ var Sorting = /** @class */ (function () {
         }
         return arr;
     };
+    //Merge Sort 
+    Sorting.prototype.mergeAndSort = function (arr, low, mid, high) {
+        var temp = [];
+        var left = low;
+        var right = mid + 1;
+        while (left <= mid && right <= high) {
+            if (arr[left] <= arr[right]) {
+                temp.push(arr[left]);
+                left++;
+            }
+            else {
+                temp.push(arr[right]);
+                right++;
+            }
+        }
+        while (left <= mid) {
+            temp.push(arr[left]);
+            left++;
+        }
+        while (right <= high) {
+            temp.push(arr[right]);
+            right++;
+        }
+        for (var i = low; i <= high; i++) {
+            arr[i] = temp[i - low];
+        }
+    };
+    Sorting.prototype.mergeSort = function (arr, low, high) {
+        if (low >= high)
+            return;
+        var mid = Math.floor((low + high) / 2);
+        this.mergeSort(arr, low, mid);
+        this.mergeSort(arr, mid + 1, high);
+        this.mergeAndSort(arr, low, mid, high);
+    };
     Sorting.prototype.swap = function (arr, index1, index2) {
         var temp = arr[index1];
         arr[index1] = arr[index2];
@@ -131,11 +166,16 @@ var Sorting = /** @class */ (function () {
     return Sorting;
 }());
 (function main() {
+    var arr = [13, 46, 24, 52, 20, 9];
+    var ln = arr.length;
     var sort = new Sorting();
-    var selectionSortedArr = sort.selectionSort([13, 46, 24, 52, 20, 9]);
-    console.log('selectionSortedArr =>', selectionSortedArr);
-    var bubbleSortedArr = sort.bubbleSort([13, 46, 24, 52, 20, 9]);
-    console.log('bubbleSortedArr    =>', bubbleSortedArr);
-    var insertionSortedArr = sort.insertionSort([13, 46, 24, 52, 20, 9]);
-    console.log('insertionSortedArr =>', insertionSortedArr);
+    //  let selectionSortedArr = sort.selectionSort(arr);
+    //  console.log('selectionSortedArr =>', selectionSortedArr);
+    //  let bubbleSortedArr = sort.bubbleSort(arr);
+    //  console.log('bubbleSortedArr    =>', bubbleSortedArr);
+    //  let insertionSortedArr = sort.insertionSort(arr);
+    //  console.log('insertionSortedArr =>', insertionSortedArr);
+    var arr2 = [9, 4, 7, 6, 3, 1, 5];
+    sort.mergeSort(arr2, 0, arr2.length - 1);
+    console.log('mergeSortedArr     =>', arr2);
 })();
