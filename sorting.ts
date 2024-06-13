@@ -137,15 +137,7 @@ class Sorting {
     }
 
 
-
-
-
-
-
-
     //Merge Sort 
-
-
     mergeAndSort(arr:number[], low:number, mid: number, high: number):void {
            let temp = [];
            let left = low;
@@ -183,15 +175,40 @@ class Sorting {
     }
 
 
-
-
-
-
-
     swap(arr: number[], index1:number, index2:number): void {
        let temp = arr[index1];
        arr[index1] = arr[index2];
        arr[index2] = temp;
+    }
+
+    partition(arr: number[], low: number, high: number): number {
+
+        let pivot = arr[low];
+        let i = low;
+        let j = high;
+        while(i < j){
+            while(arr[i] <= pivot && i <= high - 1) {
+                i++;
+            }
+            while(arr[j] > pivot && j >= low + 1){
+                j--;
+            }
+            if(i < j) this.swap(arr, i, j);
+        }
+        this.swap(arr, low, j);
+        return j;
+
+    }
+
+
+    quickSort(arr: number[],low: number, high: number ): void {
+
+        if(low < high){
+         let pIndex = this.partition(arr, low, high);
+         this.quickSort(arr, low, pIndex-1);
+         this.quickSort(arr, pIndex + 1, high); 
+        }
+
     }
 
 }
@@ -213,7 +230,11 @@ class Sorting {
      
      let arr2 = [9, 4, 7, 6, 3, 1, 5]
      sort.mergeSort(arr2,0,arr2.length-1);
-     console.log('mergeSortedArr     =>', arr2);
+     console.log('mergeSortArr     =>', arr2);
 
+
+     let arr3 = [4, 6, 2, 5, 7, 9, 1, 3];
+     sort.quickSort(arr3,0,arr3.length-1);
+     console.log('quickSortArr     =>', arr3);
 
 })()

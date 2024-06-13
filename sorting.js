@@ -163,19 +163,46 @@ var Sorting = /** @class */ (function () {
         arr[index1] = arr[index2];
         arr[index2] = temp;
     };
+    Sorting.prototype.partition = function (arr, low, high) {
+        var pivot = arr[low];
+        var i = low;
+        var j = high;
+        while (i < j) {
+            while (arr[i] <= pivot && i <= high - 1) {
+                i++;
+            }
+            while (arr[j] > pivot && j >= low + 1) {
+                j--;
+            }
+            if (i < j)
+                this.swap(arr, i, j);
+        }
+        this.swap(arr, low, j);
+        return j;
+    };
+    Sorting.prototype.quickSort = function (arr, low, high) {
+        if (low < high) {
+            var pIndex = this.partition(arr, low, high);
+            this.quickSort(arr, low, pIndex - 1);
+            this.quickSort(arr, pIndex + 1, high);
+        }
+    };
     return Sorting;
 }());
 (function main() {
     var arr = [13, 46, 24, 52, 20, 9];
     var ln = arr.length;
     var sort = new Sorting();
-    //  let selectionSortedArr = sort.selectionSort(arr);
-    //  console.log('selectionSortedArr =>', selectionSortedArr);
-    //  let bubbleSortedArr = sort.bubbleSort(arr);
-    //  console.log('bubbleSortedArr    =>', bubbleSortedArr);
-    //  let insertionSortedArr = sort.insertionSort(arr);
-    //  console.log('insertionSortedArr =>', insertionSortedArr);
+    var selectionSortedArr = sort.selectionSort(arr);
+    console.log('selectionSortedArr =>', selectionSortedArr);
+    var bubbleSortedArr = sort.bubbleSort(arr);
+    console.log('bubbleSortedArr    =>', bubbleSortedArr);
+    var insertionSortedArr = sort.insertionSort(arr);
+    console.log('insertionSortedArr =>', insertionSortedArr);
     var arr2 = [9, 4, 7, 6, 3, 1, 5];
     sort.mergeSort(arr2, 0, arr2.length - 1);
-    console.log('mergeSortedArr     =>', arr2);
+    console.log('mergeSortArr     =>', arr2);
+    var arr3 = [4, 6, 2, 5, 7, 9, 1, 3];
+    sort.quickSort(arr3, 0, arr3.length - 1);
+    console.log('quickSortArr     =>', arr3);
 })();
