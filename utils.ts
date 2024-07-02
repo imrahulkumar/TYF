@@ -4,3 +4,8 @@ export enum Approach {
     Better = 'Better',
     Optimal = 'Optimal'
 }
+
+export enum Direction {
+    Left,
+    Right
+}
