@@ -9,3 +9,9 @@ export enum Direction {
     Left,
     Right
 }
+
+export enum Case {
+    _1,
+    _2,
+    _3,
+}
