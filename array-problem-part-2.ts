@@ -191,6 +191,75 @@ class ArrayProblem {
   }
 
 
+
+
+
+  // Move all Zeros to the end of the array
+  moveAllZeros(approach: Approach, arr: number[]): number[] {
+
+    if (approach === Approach.Brute_Force) {
+      let temp = [];
+
+      arr.forEach(ele => {
+        if (ele !== 0) {
+          temp.push(ele)
+        }
+      });
+
+      let nonZeroLength = temp.length;
+
+      for (let i = 0; i < nonZeroLength; i++) {
+        arr[i] = temp[i];
+      }
+
+
+      // then fill zero 
+
+      for (let i = nonZeroLength; i < arr.length; i++) {
+        arr[i] = 0;
+      }
+
+      return arr;
+    }
+    else if (approach === Approach.Optimal) {
+      let n = arr.length;
+      let j = -1;
+
+      // Place the pointer j
+      for (let i = 0; i < n; i++) {
+        if (arr[i] === 0) {
+          j = i;
+          break;
+        }
+      }
+
+      // No non-zero elements
+      if (j === -1) return arr;
+
+      // Move the pointers i and j and swap accordingly
+      for (let i = j + 1; i < n; i++) {
+        if (arr[i] !== 0) {
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+          j++;
+        }
+      }
+
+      return arr;
+    }
+  }
+
+
+  // Given an array, and an element num the task is to find if num is present in the given array or not. If present print the index of the element or print -1.
+  search(arr:number[], num:number):number {
+    for(let i=0;i<arr.length;i++)
+      {
+          if(arr[i]==num)
+          return i;
+      }
+      return -1;
+  }
+
+
 }
 
 
@@ -205,14 +274,11 @@ class ArrayProblem {
   isSorted = arrayProblem.isSorted(Approach.Optimal, arr);
   console.log(`isSorted ${Approach.Optimal}  =>`, isSorted);
 
-
-
   let removeDuplicates = arrayProblem.removeDuplicates(Approach.Brute_Force, arr);
   console.log(`removeDuplicates ${Approach.Brute_Force}  =>`, removeDuplicates);
 
   removeDuplicates = arrayProblem.removeDuplicates(Approach.Optimal, arr);
   console.log(`removeDuplicates ${Approach.Optimal}  =>`, removeDuplicates);
-
 
   let leftRotate = arrayProblem.leftRotate(Approach.Brute_Force, [1, 2, 3, 4, 5]);
   console.log(`leftRotate ${Approach.Brute_Force}  =>`, leftRotate);
@@ -220,26 +286,33 @@ class ArrayProblem {
   leftRotate = arrayProblem.leftRotate(Approach.Optimal, [1, 2, 3, 4, 5]);
   console.log(`leftRotate ${Approach.Optimal}  =>`, leftRotate);
 
-
-
   let leftRotateByKArray = [1, 2, 3, 4, 5, 6, 7];
   let k = 2;
   let leftRotateByK = arrayProblem.rotateArray(Direction.Left, leftRotateByKArray, Approach.Brute_Force, k);
   console.log(`leftRotateByK ${Approach.Brute_Force}  =>`, leftRotateByK);
 
-
   let rightRotateByKArray = [1, 2, 3, 4, 5, 6, 7];
   let rightRotateByK = arrayProblem.rotateArray(Direction.Right, rightRotateByKArray, Approach.Brute_Force, k);
   console.log(`rightRotateByK ${Approach.Brute_Force}  =>`, rightRotateByK);
-
 
   let leftRotateByKArrayUsingReversalAlgo = [1, 2, 3, 4, 5, 6, 7];
   let letRotateByKUsingReversalAlgo = arrayProblem.rotateArray(Direction.Left, leftRotateByKArrayUsingReversalAlgo, Approach.Optimal, k);
   console.log(`letRotateByKUsingReversalAlgo ${Approach.Optimal}  =>`, letRotateByKUsingReversalAlgo);
 
-
   let rightRotateByKArrayUsingReversalAlgo = [1, 2, 3, 4, 5, 6, 7];
   let rightRotateByKUsingReversalAlgo = arrayProblem.rotateArray(Direction.Right, rightRotateByKArrayUsingReversalAlgo, Approach.Optimal, k);
   console.log(`rightRotateByKArrayUsingReversalAlgo ${Approach.Optimal}  =>`, rightRotateByKUsingReversalAlgo);
+
+  let moveZeroBruteForceArr = [1, 0, 2, 3, 2, 0, 0, 4, 5, 1];
+  let moveZeroUsingBruteForce = arrayProblem.moveAllZeros(Approach.Brute_Force, moveZeroBruteForceArr);
+  console.log(`moveZeroUsingBruteForce ${Approach.Brute_Force}  =>`, moveZeroUsingBruteForce);
+
+  let moveZeroOptimalArr = [1, 0, 2, 3, 2, 0, 0, 4, 5, 1];
+  let moveZeroUsingOptimal = arrayProblem.moveAllZeros(Approach.Brute_Force, moveZeroOptimalArr);
+  console.log(`moveZeroUsingOptimal ${Approach.Optimal}  =>`, moveZeroUsingOptimal);
+
+  let searchArr = [1,2,3,4,5];
+  let isSearchArr = arrayProblem.search(searchArr, 4);
+  console.log(`isSearchArr index =>`, isSearchArr);
 
 })()
