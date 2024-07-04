@@ -1,4 +1,4 @@
-import { Case } from "./utils";
+import { Approach, Case } from "./utils";
 
 
 
@@ -12,8 +12,6 @@ class ArrayProblem {
    *  Case 2: using Set and output is unsorted Array.
    *  Case 3: using two pointer and output is sorted Array. 
    */
-
-
   unionArray = (cases: Case, arr1: number[], arr2: number[]): number[] => {
 
     if (cases === Case._1) {
@@ -119,6 +117,56 @@ class ArrayProblem {
   }
 
 
+  // 2. Find the missing number in an array
+
+  missingNumber(approach: Approach, arr:number[]): number {
+
+    if(approach === Approach.Brute_Force){
+
+      for(let i = 1; i< arr.length; i++) {
+        let flag = 0;
+
+        for(let j = 0; j < arr.length - 1; j++){
+          if(arr[j] === i){
+             flag = 1;
+             break;
+          }
+        }
+        if(flag === 0) {
+          return i;
+        }
+      }
+      return -1;
+    } else if(approach === Approach.Better){
+      const n = arr.length;
+      const summation = (n * (n + 1))/2;
+
+      let s2 = 0;
+
+      for(let i = 0; i< n-1; i++){
+        s2 += arr[i]
+      }
+
+      return summation - s2;
+
+    } else if(approach === Approach.Optimal){
+
+      let xor1 = 0;
+      let xor2 = 0;
+      
+      for(let i = 0; i < arr.length; i++){
+           xor2 = xor2 ^ arr[i];
+           xor1 = xor1 ^ (i + 1);
+      }
+
+      xor1 = xor1 ^ arr.length;
+
+      return xor1 ^ xor2;
+
+    }
+  }
+
+
 }
 
 
@@ -128,6 +176,7 @@ class ArrayProblem {
   let arr1 = [1, 4, 7, 9];
   let arr2 = [2, 3, 5, 6, 8]
   let arrayProblem = new ArrayProblem();
+
 
   let unionCase1: any = arrayProblem.unionArray(Case._1, arr1, arr2);
   console.log(`unionCase1 =>`, unionCase1);
@@ -139,6 +188,18 @@ class ArrayProblem {
   console.log(`unionCase3 =>`, unionCase3);
 
 
+
+  let missingNumber1Arr =  [1, 2, 4, 5]; 
+  let missingNumber1: any = arrayProblem.missingNumber(Approach.Brute_Force, missingNumber1Arr);
+  console.log(`missingNumber1 ${Approach.Brute_Force} =>`, missingNumber1);
+
+  let missingNumber2Arr =  [1, 2, 4, 5]; 
+  let missingNumber2: any = arrayProblem.missingNumber(Approach.Better, missingNumber2Arr);
+  console.log(`missingNumber2 ${Approach.Better} =>`, missingNumber2);
+
+  let missingNumber3Arr =  [1, 2, 4, 5]; 
+  let missingNumber3: any = arrayProblem.missingNumber(Approach.Optimal, missingNumber3Arr);
+  console.log(`missingNumber3 ${Approach.Optimal} =>`, missingNumber3);
 
 
 })()
