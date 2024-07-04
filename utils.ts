@@ -15,3 +15,8 @@ export enum Case {
     _2,
     _3,
 }
+
+export enum  Using {
+    Map = 'Map',
+    Hash = 'Hash'
+}
