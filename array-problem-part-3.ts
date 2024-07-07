@@ -190,7 +190,6 @@ class ArrayProblem {
 
   // 4. Find the number that appears once, and the other numbers twice
   // Given a non-empty array of integers arr, every element appears twice except for one. Find that single one.
-
   getSingleElement(approach: Approach, arr: number[], using?: Using): number {
 
     if (approach === Approach.Brute_Force) {
@@ -266,7 +265,7 @@ class ArrayProblem {
             k = key;
           }
         });
-        if(k) return k;
+        if (k) return k;
         // Find the single element and return the answer:
         for (const [num, count] of hashmap) {
           if (count === 1) {
@@ -278,7 +277,6 @@ class ArrayProblem {
         // if the array contains a single element.
         return -1;
       }
-
 
     }
     else if (approach === Approach.Optimal) {
@@ -292,7 +290,104 @@ class ArrayProblem {
   }
 
 
+  // 5. Longest Subarray with given Sum K(Positives)
+  getLongestSubArray(approach: Approach, arr: number[], sn: number, using?: Using): number {
 
+
+    if (approach === Approach.Brute_Force) {
+      let n = arr.length;
+      let len = 0;
+
+      for (let i = 0; i < n; i++) {
+        for (let j = i; j < n; j++) {
+          let s = 0;
+
+          for (let k = i; k <= j; k++) {
+            s += arr[k];
+          }
+
+          if (s === sn) {
+            len = Math.max(len, j - i + 1)
+          }
+        }
+      }
+      return len;
+    }
+    else if (approach === Approach.Naive && using === Using.Loop) {
+      let n = arr.length; // size of the array
+
+      let len = 0;
+      for (let i = 0; i < n; i++) { // starting index
+        let s = 0; // Sum variable
+        for (let j = i; j < n; j++) { // ending index
+          // add the current element to
+          // the subarray a[i...j-1]
+          s += arr[j];
+
+          if (s === sn)
+            len = Math.max(len, j - i + 1);
+        }
+      }
+      return len;
+    }
+    else if (approach === Approach.Naive && using === Using.Hash) {
+      let n = arr.length; // size of the array
+
+      let preSumMap = new Map();
+      let sum = 0;
+      let maxLen = 0;
+      for (let i = 0; i < n; i++) {
+        // calculate the prefix sum till index i
+        sum += arr[i];
+
+        // if the sum = k, update the maxLen
+        if (sum === sn) {
+          maxLen = Math.max(maxLen, i + 1);
+        }
+
+        // calculate the sum of remaining part i.e. x - k
+        let rem = sum - sn;
+
+        // calculate the length and update maxLen
+        if (preSumMap.has(rem)) {
+          let len = i - preSumMap.get(rem);
+          maxLen = Math.max(maxLen, len);
+        }
+
+        // update the map checking the conditions
+        if (!preSumMap.has(sum)) {
+          preSumMap.set(sum, i);
+        }
+      }
+
+      return maxLen;
+    }
+    else if (approach === Approach.Optimal) {
+      let n = arr.length;
+
+      let left = 0; let right = 0;
+      let sum = arr[0];
+      let maxLen = 0;
+
+      while (right < n) {
+        while (left <= right && sum > sn) {
+          sum -= arr[left];
+          left++;
+        }
+
+        if (sum === sn) {
+          maxLen = Math.max(maxLen, right - left + 1);
+        }
+
+        // Move forward the right pointer
+        right++;
+        if (right < n) sum += arr[right];
+      }
+      return maxLen;
+    }
+
+    return -1;
+  }
 
 }
 
@@ -333,7 +428,6 @@ class ArrayProblem {
   console.log(`findMaxConsecutiveOnes =>`, maxConsecutive);
 
 
-
   let singleElement1Arr = [4, 1, 2, 1, 2];
   let singleElement1: any = arrayProblem.getSingleElement(Approach.Brute_Force, singleElement1Arr);
   console.log(`singleElement1 ${Approach.Brute_Force} =>`, singleElement1);
@@ -349,6 +443,24 @@ class ArrayProblem {
   let singleElement3Arr = [4, 1, 2, 1, 2];
   let singleElement3: any = arrayProblem.getSingleElement(Approach.Optimal, singleElement3Arr);
   console.log(`singleElement3 ${Approach.Optimal} =>`, singleElement3);
+
+
+  let longestSubArray1 = [2, 3, 5, 1, 9];
+  let longestSubArr1: any = arrayProblem.getLongestSubArray(Approach.Brute_Force, longestSubArray1, 10);
+  console.log(`longestSubArr1 ${Approach.Brute_Force} =>`, longestSubArr1);
+
+  let longestSubArray2 = [2, 3, 5, 1, 9];
+  let longestSubArr2: any = arrayProblem.getLongestSubArray(Approach.Naive, longestSubArray2, 10, Using.Loop);
+  console.log(`longestSubArr2 ${Approach.Brute_Force} =>`, longestSubArr2);
+
+  let longestSubArray3 = [2, 3, 5, 1, 9];
+  let longestSubArr3: any = arrayProblem.getLongestSubArray(Approach.Naive, longestSubArray3, 10, Using.Hash);
+  console.log(`longestSubArr3 ${Approach.Brute_Force} =>`, longestSubArr3);
+
+  let longestSubArray4 = [2, 3, 5, 1, 9];
+  let longestSubArr4: any = arrayProblem.getLongestSubArray(Approach.Optimal, longestSubArray4, 10);
+  console.log(`longestSubArr4 ${Approach.Brute_Force} =>`, longestSubArr4);
+
 
 
 })()

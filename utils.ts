@@ -2,7 +2,8 @@ export enum Approach {
     Brute_Force = 'Brute_Force',
     Recursive = 'Recursive',
     Better = 'Better',
-    Optimal = 'Optimal'
+    Optimal = 'Optimal',
+    Naive  = 'Naive'
 }
 
 export enum Direction {
@@ -18,5 +19,6 @@ export enum Case {
 
 export enum  Using {
     Map = 'Map',
-    Hash = 'Hash'
+    Hash = 'Hash',
+    Loop = 'Loop'
 }
