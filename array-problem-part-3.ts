@@ -293,7 +293,6 @@ class ArrayProblem {
   // 5. Longest Subarray with given Sum K(Positives)
   getLongestSubArray(approach: Approach, arr: number[], sn: number, using?: Using): number {
 
-
     if (approach === Approach.Brute_Force) {
       let n = arr.length;
       let len = 0;
@@ -389,6 +388,100 @@ class ArrayProblem {
     return -1;
   }
 
+
+
+  // 6. Longest Subarray with sum K | [Postives and Negatives]
+  getLongestSubarrayPosNegNum(approach: Approach, arr: number[], sn: number): number {
+    if (approach === Approach.Brute_Force) {
+      let n = arr.length; // size of the array
+
+      let len = 0;
+      for (let i = 0; i < n; i++) { // starting index
+        for (let j = i; j < n; j++) { // ending index
+          // add all the elements of subarray = a[i...j]
+          let s = 0;
+          for (let K = i; K <= j; K++) {
+            s += arr[K];
+          }
+
+          if (s === sn)
+            len = Math.max(len, j - i + 1);
+        }
+      }
+      return len;
+    } else if (approach === Approach.Better) {
+      let n = arr.length; // size of the array
+
+      let len = 0;
+      for (let i = 0; i < n; i++) { // starting index
+        let s = 0;
+        for (let j = i; j < n; j++) { // ending index
+          // add the current element to the subarray a[i...j-1]
+          s += arr[j];
+
+          if (s === sn)
+            len = Math.max(len, j - i + 1);
+        }
+      }
+      return len;
+    } else if(approach === Approach.Optimal){
+      let n = arr.length; // size of the array
+
+      let preSumMap = new Map();
+      let sum = 0;
+      let maxLen = 0;
+      for (let i = 0; i < n; i++) {
+          // calculate the prefix sum till index i
+          sum += arr[i];
+  
+          // if the sum = k, update the maxLen
+          if (sum === sn) {
+              maxLen = Math.max(maxLen, i + 1);
+          }
+  
+          // calculate the sum of remaining part i.e. x-k
+          let rem = sum - sn;
+  
+          // calculate the length and update maxLen
+          if (preSumMap.has(rem)) {
+              let len = i - preSumMap.get(rem);
+              maxLen = Math.max(maxLen, len);
+          }
+  
+          // finally, update the map checking the conditions
+          if (!preSumMap.has(sum)) {
+              preSumMap.set(sum, i);
+          }
+      }
+  
+      return maxLen;
+    }
+  }
+
+
+
+  // 7. Remove Duplicates in-place from Sorted Array
+  removeDuplicate(approach: Approach, arr: number[]): number {
+      if(approach === Approach.Brute_Force){
+        let set = new Set(arr);
+        let uniqueArr = Array.from(set);
+        for (let i = 0; i < uniqueArr.length; i++) {
+          arr[i] = uniqueArr[i];
+        }
+        return uniqueArr.length;
+      }
+      else if(approach === Approach.Optimal){
+        let i = 0;
+        for (let j = 1; j < arr.length; j++) {
+          if (arr[i] !== arr[j]) {
+            i++;
+            arr[i] = arr[j];
+          }
+        }
+        return i + 1;
+      }
+  }
+
 }
 
 
@@ -460,6 +553,29 @@ class ArrayProblem {
   let longestSubArray4 = [2, 3, 5, 1, 9];
   let longestSubArr4: any = arrayProblem.getLongestSubArray(Approach.Optimal, longestSubArray4, 10);
   console.log(`longestSubArr4 ${Approach.Brute_Force} =>`, longestSubArr4);
+
+
+  let longestSubArrayPosNeg1 = [-1, 1, 1];
+  let longestSubArrPosNeg1: any = arrayProblem.getLongestSubarrayPosNegNum(Approach.Brute_Force, longestSubArrayPosNeg1, 1);
+  console.log(`longestSubArrPosNeg1 ${Approach.Brute_Force} =>`, longestSubArrPosNeg1);
+
+  let longestSubArrayPosNeg2 = [-1, 1, 1];
+  let longestSubArrPosNeg2: any = arrayProblem.getLongestSubarrayPosNegNum(Approach.Brute_Force, longestSubArrayPosNeg2, 1);
+  console.log(`longestSubArrPosNeg2 ${Approach.Better} =>`, longestSubArrPosNeg2);
+
+  let longestSubArrayPosNeg3 = [-1, 1, 1];
+  let longestSubArrPosNeg3: any = arrayProblem.getLongestSubarrayPosNegNum(Approach.Brute_Force, longestSubArrayPosNeg3, 1);
+  console.log(`longestSubArrPosNeg3 ${Approach.Brute_Force} =>`, longestSubArrPosNeg3);
+
+
+  let duplicateArr1 = [1, 1, 2, 2, 2, 3, 3];
+  let removeDuplicate1: any = arrayProblem.removeDuplicate(Approach.Brute_Force, duplicateArr1);
+  console.log(`removeDuplicate1 ${Approach.Brute_Force} =>`, removeDuplicate1);
+
+
+  let duplicateArr2 = [1, 1, 2, 2, 2, 3, 3];
+  let removeDuplicate2: any = arrayProblem.removeDuplicate(Approach.Optimal, duplicateArr2);
+  console.log(`removeDuplicate2 ${Approach.Brute_Force} =>`, removeDuplicate2);
 
 
 
