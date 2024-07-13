@@ -22,3 +22,13 @@ export enum  Using {
     Hash = 'Hash',
     Loop = 'Loop'
 }
+
+export enum Variant {
+    One,
+    Two
+}
+
+export enum Confirmation {
+    Yes = 'Yes',
+    No = 'No'
+}
